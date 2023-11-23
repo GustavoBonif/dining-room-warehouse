@@ -11,7 +11,7 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long product_id;
+    private Long productId;
 
     private int quantityAvailable;
 
@@ -31,11 +31,11 @@ public class Stock {
         this.quantityAvailable = quantityAvailable;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long product_id) {
+        this.productId = product_id;
     }
 }

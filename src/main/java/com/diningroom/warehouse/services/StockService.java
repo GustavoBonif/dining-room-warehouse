@@ -26,7 +26,7 @@ public class StockService {
     private final StockRepository stockRepository;
 
     @Autowired
-    public StockService(StockRepository stockRepository,) {
+    public StockService(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 
@@ -47,16 +47,14 @@ public class StockService {
     }
 
     public ResponseEntity<String> mountNewStock(StockDTO stockDTO) {
+        Optional<Stock> existingStock = stockRepository.findByProductId(stockDTO.getProductId());
 
-        Optional<Stock existingStock = stockRepository.findByProductId(stockDTO.getProduct_id());
-
-
-        if(!this.productService.existsById(stockDTO.getProduct_id())) {
-            return new ResponseEntity<>("Produto com ID " + stockDTO.getProduct_id() + " não encontrado", HttpStatus.NOT_FOUND);
+        if(existingStock == null) {
+            return new ResponseEntity<>("Produto com ID " + stockDTO.getProductId() + " não encontrado", HttpStatus.NOT_FOUND);
         }
 
         Stock newStock = new Stock();
-        newStock.setProduct(productService.findEntityById(stockDTO.getProduct_id()));
+        newStock.setProductId(stockDTO.getProductId());
         newStock.setQuantityAvailable(stockDTO.getQuantityAvailable());
 
         this.create(newStock);
@@ -65,11 +63,14 @@ public class StockService {
     }
 
     public void mountNewStockFromNewProduct(StockDTO stockDTO) {
-        if (!this.productService.existsById(stockDTO.getProduct_id())) {
-            throw new IllegalArgumentException("Produto com o id " + stockDTO.getProduct_id() + " não existe.");
+        Optional<Stock> existingStock = stockRepository.findByProductId(stockDTO.getProductId());
+
+        if(!existingStock.isPresent()) {
+            throw new IllegalArgumentException("Produto com o id " + stockDTO.getProductId() + " não existe.");
         }
+
         Stock newStock = new Stock();
-        newStock.setProduct(productService.findEntityById(stockDTO.getProduct_id()));
+        newStock.setProductId(stockDTO.getProductId());
         newStock.setQuantityAvailable(10);
 
         this.create(newStock);
@@ -125,9 +126,10 @@ public class StockService {
     }
 
     public void updateStockByProduct(Long productId, int quantityOrdered) {
-        Stock stock = stockRepository.findByProductId(productId);
+        Optional<Stock> optionalStock = findByProductId(productId);
 
-        if (stock != null) {
+        if (optionalStock.isPresent()) {
+            Stock stock = optionalStock.get();
             int currentQuantityAvailable = stock.getQuantityAvailable();
             int updatedQuantityAvailable = currentQuantityAvailable - quantityOrdered;
 
@@ -140,5 +142,9 @@ public class StockService {
         } else {
             throw new IllegalArgumentException("Produto com ID " + productId + " não encontrado em estoque");
         }
+    }
+
+    public Optional<Stock> findByProductId(Long productId) {
+        return stockRepository.findByProductId(productId);
     }
 }

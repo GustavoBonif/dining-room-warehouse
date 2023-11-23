@@ -6,7 +6,7 @@ public class StockDTO {
 
     private Long id;
 
-    private Long product_id;
+    private Long productId;
 
     private int quantityAvailable;
 
@@ -14,15 +14,15 @@ public class StockDTO {
 
     }
 
-    public StockDTO(Long id, Long product_id, int quantityAvailable) {
+    public StockDTO(Long id, Long productId, int quantityAvailable) {
         this.id = id;
-        this.product_id = product_id;
+        this.productId = productId;
         this.quantityAvailable = quantityAvailable;
     }
 
     public StockDTO(Stock stock) {
         this.id = stock.getId();
-        this.product_id = stock.getProduct_id();
+        this.productId = stock.getProductId();
         this.quantityAvailable = stock.getQuantityAvailable();
     }
 
@@ -34,12 +34,12 @@ public class StockDTO {
         this.id = id;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public int getQuantityAvailable() {
