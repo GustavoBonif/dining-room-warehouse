@@ -62,18 +62,15 @@ public class StockService {
         return new ResponseEntity<>("Estoque criado com sucesso.", HttpStatus.CREATED);
     }
 
-    public void mountNewStockFromNewProduct(StockDTO stockDTO) {
-        Optional<Stock> existingStock = stockRepository.findByProductId(stockDTO.getProductId());
-
-        if(!existingStock.isPresent()) {
-            throw new IllegalArgumentException("Produto com o id " + stockDTO.getProductId() + " não existe.");
-        }
+    public ResponseEntity<String> mountNewStockFromNewProduct(Long productId) {
 
         Stock newStock = new Stock();
-        newStock.setProductId(stockDTO.getProductId());
+        newStock.setProductId(productId);
         newStock.setQuantityAvailable(10);
 
         this.create(newStock);
+
+        return new ResponseEntity<>("Estoque criado com sucesso.", HttpStatus.CREATED);
     }
 
     @Transactional

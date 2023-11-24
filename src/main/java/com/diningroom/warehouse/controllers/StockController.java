@@ -43,4 +43,9 @@ public class StockController {
     public ResponseEntity<String> deleteStock(@PathVariable Long id) {
         return service.deleteStock(id);
     }
+
+    @PostMapping("/createFromProduct")
+    public ResponseEntity<String> createFromProduct(@RequestParam("productId") Long productId) {
+        return service.mountNewStockFromNewProduct(productId);
+    }
 }
