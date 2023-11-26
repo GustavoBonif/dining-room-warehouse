@@ -48,4 +48,9 @@ public class StockController {
     public ResponseEntity<String> createFromProduct(@RequestParam("productId") Long productId) {
         return service.mountNewStockFromNewProduct(productId);
     }
+
+    @RequestMapping(value = "/updateStockByProduct", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateStockByProduct(@RequestParam("productId") Long productId, @RequestParam("quantityOrdered") int quantityOrdered) {
+        return service.updateStockByProduct(productId, quantityOrdered);
+    }
 }

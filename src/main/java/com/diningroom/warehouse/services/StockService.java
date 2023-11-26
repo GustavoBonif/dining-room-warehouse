@@ -122,7 +122,7 @@ public class StockService {
         return new StockDTO(stock);
     }
 
-    public void updateStockByProduct(Long productId, int quantityOrdered) {
+    public ResponseEntity<String> updateStockByProduct(Long productId, int quantityOrdered) {
         Optional<Stock> optionalStock = findByProductId(productId);
 
         if (optionalStock.isPresent()) {
@@ -139,6 +139,7 @@ public class StockService {
         } else {
             throw new IllegalArgumentException("Produto com ID " + productId + " não encontrado em estoque");
         }
+        return new ResponseEntity<>("Compra permitida, quantidade suficiente", HttpStatus.OK);
     }
 
     public Optional<Stock> findByProductId(Long productId) {
